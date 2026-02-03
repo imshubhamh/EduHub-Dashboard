@@ -38,8 +38,7 @@ export default function UploadNotesForm() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-3xl mx-auto">
-        {/* 🔙 Back */}
+      <div className=" mx-auto">
         <div
           onClick={() => navigate(-1)}
           className="mb-4 flex items-center gap-2 cursor-pointer w-fit"
@@ -142,7 +141,7 @@ export default function UploadNotesForm() {
 
             <button
               type="submit"
-              className="inline-flex items-center gap-1 border border-green-600 rounded-lg bg-green-100 px-3 py-1 text-sm font-medium text-green-600 hover:bg-green-200"
+              className="inline-flex items-center gap-1 rounded-lg bg-green-100 px-3 py-1 text-sm font-medium text-green-600 hover:bg-green-200"
             >
                 Upload
               <CloudArrowUpIcon className="h-4 w-4" />

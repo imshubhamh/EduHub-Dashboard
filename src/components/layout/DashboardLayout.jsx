@@ -14,7 +14,7 @@ export default function DashboardLayout({ children }) {
   )
 
   const sidebarWidth = 288 // 18rem
-  const secondaryWidth = selectedMenu?.secondary ? 320 : 0
+  const secondaryWidth = selectedMenu?.secondary ? 285 : 0
   const totalLeft = sidebarWidth + secondaryWidth
 
   return (

@@ -17,7 +17,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="flex h-14 items-center px-6 border-b border-gray-200">
         <span className="text-lg font-semibold">
-          SPYI<span className="">WEB</span>
+            SPYI<span className="font-normal text-slate-600">WEB</span>
         </span>
       </div>
 
