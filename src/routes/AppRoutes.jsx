@@ -1,5 +1,3 @@
-
-
 import { Routes, Route } from 'react-router-dom'
 
 // ================= DASHBOARD =================
@@ -180,7 +178,7 @@ export default function AppRoutes() {
       <Route path="/content/notes" element={<RevenueAnalytics />} />
       <Route path="/content/downloads" element={<TrafficAnalytics />} />
       <Route path="/content/tags" element={<ConversionAnalytics />} />
-    
+
       {/* ========= SETTINGS  ========= */}
       <Route path="/settings" element={<GeneralSettings />} />
       <Route path="/settings/general" element={<GeneralSettings />} />
