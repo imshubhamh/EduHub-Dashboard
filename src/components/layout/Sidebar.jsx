@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { navigation } from '../data/navigation'
-import { ChevronDownIcon } from '@heroicons/react/24/outline'
+import { ChevronDownIcon, PlusCircleIcon, PlusIcon } from '@heroicons/react/24/outline'
+import SecondarySidebar from './SecondarySidebar'
 
 export default function Sidebar() {
   const navigate = useNavigate()
@@ -9,11 +10,21 @@ export default function Sidebar() {
   const [profileOpen, setProfileOpen] = useState(false)
 
   const toggleProfile = () => setProfileOpen((prev) => !prev)
-  const [openMenu, setOpenMenu] = useState(null)
+  const [openMenus, setOpenMenus] = useState({})
+  const [selectedMenu, setSelectedMenu] = useState(
+    navigation[0]?.secondary?.[0] || null
+  )
 
-const toggleMenu = (name) => {
-  setOpenMenu(openMenu === name ? null : name)
-}
+
+
+
+  const toggleMenu = (key) => {
+    setOpenMenus((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }))
+  }
+
 
 
   return (
@@ -21,7 +32,7 @@ const toggleMenu = (name) => {
       {/* Logo */}
       <div className="flex h-14 items-center px-6 border-b border-gray-200">
         <span className="text-lg font-semibold">
-            D<span className="font-normal text-slate-600">WEB</span>
+          D<span className="font-normal text-slate-600">WEB</span>
         </span>
       </div>
 
@@ -29,78 +40,63 @@ const toggleMenu = (name) => {
       <nav className="flex-1 px-3 py-4">
         <ul className="space-y-1 text-sm">
           {navigation.map((item) => {
-            const isOpen = openMenu === item.name
-            const hasSubmenu = item.submenu?.length
-            const active = item.path && location.pathname.startsWith(item.path)
+            const hasSecondary = item.secondary?.length
+            const isSecondaryOpen = openMenus[item.name]
 
-          return (
-            <li key={item.name}>
-              {/* MAIN ITEM */}
-              <button
-                onClick={() => {
-                  if (hasSubmenu) {
-                    toggleMenu(item.name)
-                  } else if (item.path) {
-                    navigate(item.path)
-                  }
-                }}
-                className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 w-full text-left
-                  ${active ? 'text-indigo-600' : 'text-gray-700 hover:bg-gray-50'}
-                `}
-              >
-                <div className="flex items-center gap-3">
-                  {/* {item.icon && (
-                    <item.icon
-                      className={`h-5 w-5 ${active ? 'text-indigo-600' : 'text-gray-400'}`}
-                    />
-                  )} */}
-                  {item.icon && (
-                    <item.icon
-                      className={`h-5 w-5 ${item.color} ${active ? 'text-indigo-600' : ''}`}
+            return (
+              <li key={item.name}>
+                {/* MAIN LEVEL */}
+                <button
+                  onClick={() => {
+                    if (hasSecondary) {
+                      toggleMenu(item.name)
+                    } else {
+                      navigate(item.path)
+                    }
+                  }}
+
+                  className="flex items-center justify-between w-full px-3 py-2 rounded-lg hover:bg-gray-50"
+                >
+                  <div className="flex items-center gap-3">
+                    {item.icon && (
+                      <item.icon className={`h-5 w-5 ${item.color}`} />
+                    )}
+                    {item.name}
+                  </div>
+
+                  {hasSecondary && (
+                    <PlusIcon
+                      className={`h-3 w-3 transition-transform text-gray-500 ${isSecondaryOpen ? 'rotate-180' : ''
+                        }`}
                     />
                   )}
+                </button>
 
-                  {item.name}
-                </div>
-
-                {hasSubmenu && (
-                  <ChevronDownIcon
-                    className={`h-4 w-4 transition-transform ${
-                      isOpen ? 'rotate-180' : ''
-                    }`}
-                  />
-                )}
-              </button>
-
-              {/* SUBMENU (Education items) */}
-              {hasSubmenu && isOpen && (
-                <ul className="ml-8 mt-1 space-y-1">
-                  {item.submenu.map((sub) => {
-                    const subActive = location.pathname.startsWith(sub.path)
-
-                    return (
+                {/* SECOND LEVEL */}
+                {hasSecondary && isSecondaryOpen && (
+                  <ul className="ml-4 mt-1 space-y-1">
+                    {item.secondary.map((sub) => (
                       <li key={sub.name}>
                         <button
-                          onClick={() => navigate(sub.path)}
-                          className={`w-full text-left px-3 py-1.5 rounded-md text-sm
-                            ${
-                              subActive
-                                ? 'bg-indigo-50 text-indigo-600'
-                                : 'text-gray-600 hover:bg-gray-50'
-                            }
-                          `}
+                          onClick={() => setSelectedMenu(sub)}
+                          className="w-full text-left px-3 py-1.5 rounded-md hover:bg-gray-50"
                         >
-                          {sub.name}
+                          <div className="flex items-center gap-3">
+                            {sub.icon && (
+                              <item.icon className={`h-5 w-5 ${sub.color}`} />
+                            )}
+                            {sub.name}
+                          </div>
                         </button>
                       </li>
-                    )
-                  })}
-                </ul>
-              )}
-            </li>
-          )
-        })}
-      </ul>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+
       </nav>
       {/* Profile & Logout */}
       <div className="px-3 border-t border-dashed border-gray-200 mt-auto relative">
@@ -139,6 +135,9 @@ const toggleMenu = (name) => {
           </div>
         )}
       </div>
+      <SecondarySidebar selectedMenu={selectedMenu} />
+
     </aside>
+
   )
 }
