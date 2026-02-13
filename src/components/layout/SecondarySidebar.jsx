@@ -110,8 +110,8 @@ export default function SecondarySidebar({ selectedMenu }) {
       className="
         fixed
         top-16  
-        left-[19rem]      
-        w-64 h-[calc(100%-5rem)]
+        left-[17rem]      
+        w-60 h-[calc(100%-5rem)]
         bg-[#123C5F]
         p-6 rounded-xl
         shadow-sm
